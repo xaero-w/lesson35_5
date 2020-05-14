@@ -1,6 +1,6 @@
 require 'nokogiri'
 require 'open-uri'
-require_relative 'lib/filmreader'
+require_relative 'lib/film'
 
 # URL = "https://www.kinopoisk.ru/lists/top250/?is-redirected=1".freeze
 URL = "https://www.kinoafisha.info/rating/movies/2019/"
@@ -15,7 +15,7 @@ doc.css('.films_name').each do |row|
 end
 
 directors = []
-doc.css('.films_info_link').map do |row|
+doc.css('.films_info_link').each do |row|
   director = row.text.chomp
   directors << director
 end
@@ -30,7 +30,7 @@ end
 film_info = []
 
 film_contents.map do |title, director|
-  film_info << Filmreader.new(title, director)
+  film_info << Film.new(title, director)
 end
 
 film_to_choose = film_info.sample(6)
