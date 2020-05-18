@@ -11,9 +11,7 @@ doc = Nokogiri::HTML(html)
 film_list = doc.css(".films_name").map { |row| row.text.chomp}
 directors = doc.css(".films_info_link").map { |row| row.text.chomp}
 
-contents = Hash[film_list.zip directors]
-
-film_info = contents.map do |title, director|
+film_info = Hash[film_list.zip directors].map do |title, director|
   Film.new(title, director)
 end
 
