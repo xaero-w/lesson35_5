@@ -8,29 +8,13 @@ URL = "https://www.kinoafisha.info/rating/movies/2019/"
 html = open(URL) { |result| result.read }
 doc = Nokogiri::HTML(html)
 
-film_list = []
-doc.css('.films_name').each do |row|
-  film = row.text.chomp
-  film_list << film
-end
-
-directors = []
-doc.css('.films_info_link').each do |row|
-  director = row.text.chomp
-  directors << director
-end
+film_list = doc.css(".films_name").map { |row| row.text.chomp}
+directors = doc.css(".films_info_link").map { |row| row.text.chomp}
 
 contents = Hash[film_list.zip directors]
 
-film_contents = []
-contents.map do |key, value|
-  film_contents << [key, value]
-end
-
-film_info = []
-
-film_contents.map do |title, director|
-  film_info << Film.new(title, director)
+film_info = contents.map do |title, director|
+  Film.new(title, director)
 end
 
 film_to_choose = film_info.sample(6)
